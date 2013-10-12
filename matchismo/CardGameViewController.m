@@ -9,6 +9,7 @@
 #import "CardGameViewController.h"
 #import "PlayingCardDeck.h"
 #import "CardMatchingGame.h"
+#import "GameResult.h"
 
 
 @interface CardGameViewController ()
@@ -23,14 +24,18 @@
 - (IBAction)dealButton:(id)sender;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *gameTypeControl;
 - (IBAction)changeGameType:(id)sender;
-
-
-
+@property (strong, nonatomic) GameResult *gameResult;
 
 @end
 
 
 @implementation CardGameViewController
+
+- (GameResult *)gameResult
+{
+    if (!_gameResult) _gameResult = [[GameResult alloc] init];
+    return _gameResult;
+}
 
 //lazy instanciation to create a new deck with the card count(how many buttons there are)
 - (CardMatchingGame *)game
@@ -69,6 +74,7 @@
     _flipCount = flipCount;
     self.flipsLabel.text = [NSString stringWithFormat:@"Flips: %d", self.flipCount];
     NSLog(@"flips updated to %d", self.flipCount);
+    self.gameResult.score = self.game.score;
 }
 
 - (IBAction)flipCard:(UIButton *)sender
